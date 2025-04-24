@@ -25,14 +25,18 @@ function ChatBot({ user, onLogout }) {
   const sendMessage = async (customText = null) => {
     const messageToSend = customText ?? input;
     if (!messageToSend.trim()) return;
-
+  
     const userMsg = { from: 'user', type: 'text', text: messageToSend };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
-
+  
+    // Add a loading indicator
+    const loadingMsg = { from: 'bot', type: 'loading' };
+    setMessages(prev => [...prev, loadingMsg]);
+  
     const response = await sendMessageToLex(messageToSend, user);
     const lexMessages = response.messages || [];
-
+  
     const formattedMessages = lexMessages.map((msg) => {
       if (msg.contentType === 'ImageResponseCard') {
         const card = msg.imageResponseCard || {};
@@ -50,9 +54,10 @@ function ChatBot({ user, onLogout }) {
         };
       }
     });
-
-    setMessages(prev => [...prev, ...formattedMessages]);
-  };
+  
+    // Replace loading indicator with actual messages
+    setMessages(prev => [...prev.slice(0, -1), ...formattedMessages]);
+  };  
 
   const renderMessage = (msg, idx) => {
     return (
@@ -62,11 +67,11 @@ function ChatBot({ user, onLogout }) {
           alt={msg.from}
           className="avatar"
         />
-
+  
         {msg.type === 'text' && (
           <div className={`msg ${msg.from}`}>{msg.text}</div>
         )}
-
+  
         {msg.type === 'card' && (
           <div className="msg card">
             {msg.title && <div className="card-title">{msg.title}</div>}
@@ -83,9 +88,15 @@ function ChatBot({ user, onLogout }) {
             </div>
           </div>
         )}
+  
+        {msg.type === 'loading' && (
+          <div className={`msg ${msg.from} loading-dots`}>
+            <span>.</span><span>.</span><span>.</span>
+          </div>
+        )}
       </div>
     );
-  };
+  };  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
