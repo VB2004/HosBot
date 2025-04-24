@@ -7,7 +7,7 @@ function Login() {
 
   return (
     <div className="login-page">
-      <h1>Welcome to ChatBot</h1>
+      <h1>Welcome to HosBot</h1>
       <button className="login-btn" onClick={() => window.location.href = loginUrl}>
         Login with Google
       </button>
