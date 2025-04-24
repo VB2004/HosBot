@@ -20,10 +20,7 @@ function App() {
   return (
     <div className="app-container">
       {user ? (
-        <>
-          <button className="logout-btn" onClick={logout}>Logout</button>
-          <ChatBot user={user} />
-        </>
+        <ChatBot user={user} onLogout={logout} />
       ) : (
         <Login />
       )}

@@ -10,7 +10,7 @@ import { CognitoAuth } from "amazon-cognito-auth-js";
 const auth = new CognitoAuth({
   UserPoolId: import.meta.env.VITE_USER_POOL_ID,
   ClientId: import.meta.env.VITE_CLIENT_ID,
-  RedirectUri: "https://hos-bot-bharaths-projects-6eda7bc6.vercel.app/",  
+  RedirectUri: import.meta.env.VITE_COGNITO_REDIRECT_URI,
 });
 
 export function initiateCognitoSignIn() {

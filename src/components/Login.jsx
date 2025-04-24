@@ -1,9 +1,9 @@
 const clientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
 const domain = import.meta.env.VITE_COGNITO_DOMAIN;
-const redirectUri = 'http://localhost:5173';
+const redirectUri = import.meta.env.VITE_COGNITO_REDIRECT_URI;
 
 function Login() {
-  const loginUrl = `${domain}/login?client_id=${clientId}&response_type=code&scope=email+openid+profile&redirect_uri=${encodeURIComponent(redirectUri)}`;
+  const loginUrl = `${domain}/login?client_id=${clientId}&response_type=token&scope=email+openid+profile&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
   return (
     <div className="login-page">
